@@ -1,6 +1,8 @@
 import tkinter as tk
 import math
 from tkinter import ttk
+from tkcalendar import DateEntry
+from tktimepicker import SpinTimePickerOld
 import pyperclip
 
 # create the main window
@@ -26,6 +28,8 @@ tab_control.add(tab2, text="Tab 2")
 # pack the tab control to the main window
 tab_control.grid(column=0, row=0, sticky="nsew")
 
+#region Crafting Calculator codes Tab 1
+
 # create the input boxes
 have1 = tk.Entry(tab1, width=20)
 have2 = tk.Entry(tab1, width=20)
@@ -47,10 +51,15 @@ need3.insert(0, "14")
 need4.insert(0, "0")
 
 # create the text boxes with borders
-text1 = tk.Text(tab1, width=10, height=1, borderwidth=2, relief="groove")
-text2 = tk.Text(tab1, width=10, height=1, borderwidth=2, relief="groove")
-text3 = tk.Text(tab1, width=10, height=1, borderwidth=2, relief="groove")
-text4 = tk.Text(tab1, width=10, height=1, borderwidth=2, relief="groove")
+text1 = tk.Text(tab1, width=10, height=1, borderwidth=2, relief="flat")
+text2 = tk.Text(tab1, width=10, height=1, borderwidth=2, relief="flat")
+text3 = tk.Text(tab1, width=10, height=1, borderwidth=2, relief="flat")
+text4 = tk.Text(tab1, width=10, height=1, borderwidth=2, relief="flat")
+
+text1.grid(row=7, column=0, padx=10, pady=10)
+text2.grid(row=7, column=1, padx=10, pady=10)
+text3.grid(row=7, column=2, padx=10, pady=10)
+text4.grid(row=7, column=3, padx=10, pady=10)
 
 #define clipboard copy
 def copy_to_clipboard():
@@ -100,10 +109,6 @@ level2_label.grid(row=6, column=1, padx=10)
 level3_label.grid(row=6, column=2, padx=10)
 level4_label.grid(row=6, column=3, padx=10)
 
-text1.grid(row=7, column=0, padx=10, pady=10)
-text2.grid(row=7, column=1, padx=10, pady=10)
-text3.grid(row=7, column=2, padx=10, pady=10)
-text4.grid(row=7, column=3, padx=10, pady=10)
 
 
 
@@ -137,9 +142,62 @@ def submit():
         text3.insert(tk.END, "Materials")
         text4.insert(tk.END, "!")
 
-
 # bind the submit function to the button click event
 button.config(command=submit)
+
+
+
+#endregion
+
+#region Resin Calculator codes Tab 2
+
+
+#Labels
+resin_have_label = tk.Label(tab2, text="Resin you have")
+full_resin_label = tk.Label(tab2, text="Date and Time to full")
+calcdtres_label = tk.Label(tab2, text="Calculate Resin at this Date and Time")
+calcdtres_output_label = tk.Label(tab2, text="Output")
+
+# Create the widgets for tab 2
+resin_have = tk.Entry(tab2, width=10)
+date_picker = DateEntry(tab2, width=12, background='darkblue', foreground='white', borderwidth=2)
+time_picker = SpinTimePickerOld(tab2)
+time_picker.addAll(0,1)
+time_picker.configure_12HrsTime()
+time_picker.configure_minute()
+
+text_box1 = tk.Text(tab2, width=15, height=2)
+text_box2 = tk.Text(tab2, width=10, height=1)
+
+
+
+def printshit():
+    print()
+    
+
+resin_button = tk.Button(tab2, text="Submit", command=printshit, width=30, height=2)
+
+# Place the widgets in tab 2
+resin_have_label.grid(row=0, column=0, padx=0, pady=0)
+full_resin_label.grid(row=0, column=1, padx=0, pady=0)
+resin_have.grid(row=1, column=0, padx=10, pady=10)
+text_box1.grid(row=1, column=1, padx=10, pady=10)
+
+calcdtres_label.grid(row=2, column=0, padx=0, pady=0)
+calcdtres_output_label.grid(row=2, column=1, padx=10, pady=10)
+date_picker.grid(row=3,column=0,sticky="w",padx=10)
+text_box2.grid(row=3, rowspan=2, column=1, padx=10, pady=10)
+
+
+time_picker.grid(row=4, column=0, padx=10, pady=10)
+
+resin_button.grid(row=5, column=0,columnspan=3 , pady=10)
+
+
+
+
+#endregion
+
 
 # run the main loop
 window.mainloop()
