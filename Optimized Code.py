@@ -152,12 +152,12 @@ button.config(command=submit)
 
 #region Resin Calculator codes Tab 2
 
-
 #Labels
 resin_have_label = tk.Label(tab2, text="Resin you have")
 full_resin_label = tk.Label(tab2, text="Date and Time to full")
 calcdtres_label = tk.Label(tab2, text="Calculate Resin at this Date and Time")
 calcdtres_output_label = tk.Label(tab2, text="Output")
+shit_label = tk.Label(tab2, text="Condensed Resin: 0\nFragile Resin: 0")
 
 #for timepicker use only
 nowdt = datetime.datetime.now()
@@ -174,7 +174,6 @@ personal_dtformat = "%m/%d/%Y %I:%M %p"
 
 #default values
 resin_have.insert(0, "0")
-
 
 def printshit():
     nowdatetime = datetime.datetime.now()
@@ -225,6 +224,7 @@ def printshit():
     text_box2.delete("1.0", tk.END)
     text_box2.insert(tk.END, resin_output)
     
+    shit_label.config(text=f"Condensed Resin: {math.floor(resin_output/40)}\nFragile Resin: {math.floor(resin_output%40/20)}")
     # wantdatetime = datetime.datetime(int(resin_year),int(resin_month),int(resin_day),int(resin_hour),int(resin_minute))
     # print(nowdatetime.strftime("%Y-%m-%d %H:%M"))
     # print(wantdatetime.strftime("%Y-%m-%d %H:%M"))
@@ -261,11 +261,11 @@ date_picker.grid(row=3,column=0,sticky="w",padx=10)
 text_box2.grid(row=3, rowspan=2, column=1, padx=10, pady=10)
 
 
+shit_label.grid(row=3, rowspan=2, column=2, padx=10, pady=10)
+
 time_picker.grid(row=4, column=0,sticky="w",padx=10, pady=10)
 
 resin_button.grid(row=5, column=0,columnspan=3 , pady=10)
-
-
 
 
 #endregion
