@@ -1,5 +1,6 @@
 import tkinter as tk
 import math
+import datetime
 from tkinter import ttk
 from tkcalendar import DateEntry
 from tktimepicker import SpinTimePickerOld
@@ -166,13 +167,80 @@ time_picker.addAll(0,1)
 time_picker.configure_12HrsTime()
 time_picker.configure_minute()
 
-text_box1 = tk.Text(tab2, width=15, height=2)
+text_box1 = tk.Text(tab2, width=22, height=1)
 text_box2 = tk.Text(tab2, width=10, height=1)
+personal_dtformat = "%m/%d/%Y %I:%M %p"
 
+#default values
+resin_have.insert(0, "0")
 
 
 def printshit():
-    print()
+    nowdatetime = datetime.datetime.now()
+    # nowdatetime_formatted = nowdatetime.strftime('%m/%d/%Y %I:%M %p')
+
+    #calculate date and time until resin cap
+    reshav = resin_have.get()
+    delta = datetime.timedelta(hours=math.floor((160.0 - float(reshav))*8/60), minutes=((160-float(reshav))*8)%60)
+    fullrestime = nowdatetime + delta
+    text_box1.delete("1.0", tk.END)
+    text_box1.insert(tk.END, fullrestime.strftime(personal_dtformat))
+    
+    #calculate amount resin, from resin amount now, on a certain datetime
+    date = date_picker.get_date()
+    resin_month = date.month
+    resin_day = date.day
+    resin_year = date.year
+    resin_hour = float(time_picker.hours())
+    nowhr = nowdatetime.hour
+    resin_minute = float(time_picker.minutes())
+    nowmin = nowdatetime.minute
+
+    #converts hours from 12h to 24h
+    if(time_picker.period()=="a.m" and time_picker.hours()==12):resin_hour = 0
+    elif(time_picker.period()=="p.m" and time_picker.hours()<12):resin_hour += 12
+
+    #goback to this, it needs to be dependent on the day
+    # if(nowdatetime.strftime("%p")=="PM" and time_picker.period()=="a.m"):resin_hour +=
+
+    # hrdifftomin = (resin_hour-nowhr)*60
+    # mindiff = 0
+    # if(hrdifftomin==0):mindiff = resin_minute-nowmin
+    # elif(hrdifftomin>=60):mindiff = (resin_minute)+(60-nowhr)
+    # elif(hrdifftomin<0):mindiff = 0
+
+    # convert the input values to minutes
+    start_time = nowhr * 60 + nowmin
+    end_time = resin_hour * 60 + resin_minute
+
+    start_date = nowdatetime.year * 365 + (nowdatetime.month - 1) * 30 + nowdatetime.day
+    end_date = resin_year * 365 + (resin_month - 1) * 30 + resin_day
+
+    # calculate the difference in minutes
+    total_minutes = (end_date - start_date) * 24 * 60 + (end_time - start_time)
+    
+    resin_output = math.floor(total_minutes/8+float(reshav))
+
+    text_box2.delete("1.0", tk.END)
+    text_box2.insert(tk.END, resin_output)
+
+    # wantdatetime = datetime.datetime(int(resin_year),int(resin_month),int(resin_day),int(resin_hour),int(resin_minute))
+
+    # for variable in [resin_year, resin_month, resin_day, resin_hour, resin_minute]:
+    #     print(variable," ")
+
+    # print(nowdatetime.strftime("%Y-%m-%d %H:%M"))
+    # print(wantdatetime.strftime("%Y-%m-%d %H:%M"))
+    # print(divmod(int((wantdatetime-nowdatetime).total_seconds()),60))
+
+    # resin_hour += resin_minute/60
+    # resin_dtoutput = (resin_hour*60/8)+float(reshav)
+    # print(resin_dtoutput)
+
+    # print(resin_hour, " ", time_picker.minutes(), " ", time_picker.period())
+
+    # print(math.floor((160.0 - float(reshav))*8/60))
+    # print(((160-float(reshav))*8)%60)
     
 
 resin_button = tk.Button(tab2, text="Submit", command=printshit, width=30, height=2)
