@@ -159,13 +159,14 @@ full_resin_label = tk.Label(tab2, text="Date and Time to full")
 calcdtres_label = tk.Label(tab2, text="Calculate Resin at this Date and Time")
 calcdtres_output_label = tk.Label(tab2, text="Output")
 
+#for timepicker use only
+nowdt = datetime.datetime.now()
+
 # Create the widgets for tab 2
 resin_have = tk.Entry(tab2, width=10)
 date_picker = DateEntry(tab2, width=12, background='darkblue', foreground='white', borderwidth=2)
-time_picker = SpinTimePickerOld(tab2)
+time_picker = SpinTimePickerOld(tab2,h_width=5,m_width=5,p_width=4,i_hr=int(nowdt.strftime('%I')),i_min=nowdt.minute,i_p=nowdt.strftime('%p'))
 time_picker.addAll(0,1)
-time_picker.configure_12HrsTime()
-time_picker.configure_minute()
 
 text_box1 = tk.Text(tab2, width=22, height=1)
 text_box2 = tk.Text(tab2, width=10, height=1)
@@ -223,8 +224,11 @@ def printshit():
 
     text_box2.delete("1.0", tk.END)
     text_box2.insert(tk.END, resin_output)
-
+    
     # wantdatetime = datetime.datetime(int(resin_year),int(resin_month),int(resin_day),int(resin_hour),int(resin_minute))
+    # print(nowdatetime.strftime("%Y-%m-%d %H:%M"))
+    # print(wantdatetime.strftime("%Y-%m-%d %H:%M"))
+
 
     # for variable in [resin_year, resin_month, resin_day, resin_hour, resin_minute]:
     #     print(variable," ")
@@ -257,7 +261,7 @@ date_picker.grid(row=3,column=0,sticky="w",padx=10)
 text_box2.grid(row=3, rowspan=2, column=1, padx=10, pady=10)
 
 
-time_picker.grid(row=4, column=0, padx=10, pady=10)
+time_picker.grid(row=4, column=0,sticky="w",padx=10, pady=10)
 
 resin_button.grid(row=5, column=0,columnspan=3 , pady=10)
 
