@@ -10,7 +10,7 @@ import pyperclip
 window = tk.Tk()
 
 # set the window title
-window.title("My GUI")
+window.title("Genshin Helper")
 
 # set the minimum window size to 560x200
 window.minsize(570, 270) #widthxheight
