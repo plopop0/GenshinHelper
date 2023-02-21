@@ -24,9 +24,11 @@ tab2 = ttk.Frame(tab_control)
 tab3 = ttk.Frame(tab_control)
 
 # add tabs to tab control
-tab_control.add(tab1, text=" Ascension Materials ")
-tab_control.add(tab2, text="     Resin     ")
-tab_control.add(tab3, text="   Artifacts   ")
+
+tab1_txt, tab2_txt, tab3_txt = " Ascension Materials ", "     Resin     ", "   Artifacts   "
+tab_control.add(tab1, text=tab1_txt)
+tab_control.add(tab2, text=tab2_txt)
+tab_control.add(tab3, text=tab3_txt)
 
 # pack the tab control to the main window
 tab_control.grid(column=0, row=0, sticky="nsew")
@@ -159,7 +161,8 @@ resin_have_label = tk.Label(tab2, text="Resin you have")
 full_resin_label = tk.Label(tab2, text="Date and Time to full")
 calcdtres_label = tk.Label(tab2, text="Calculate Resin at this Date and Time")
 calcdtres_output_label = tk.Label(tab2, text="Output")
-shit_label = tk.Label(tab2, text="Condensed Resin: 0\nFragile Resin: 0")
+# op_box = tk.Label(tab2, text="Condensed Resin: 0\nFragile Resin: 0") #previous ver
+op_box = tk.Text(tab2, width=20, height=8)
 
 #for timepicker use only
 nowdt = datetime.datetime.now()
@@ -184,9 +187,7 @@ time_picker.addAll(0,1)
 #                                           validate="all")
 # p-TP =
 
-
-
-
+#/backwards
 
 text_box1 = tk.Text(tab2, width=22, height=1)
 text_box2 = tk.Text(tab2, width=10, height=1)
@@ -203,7 +204,7 @@ calcdtres_output_label.grid(row=2, column=1, padx=10, pady=10)
 date_picker.grid(row=3,column=0,sticky="w",padx=10)
 text_box2.grid(row=3, column=1, padx=10, pady=10)
 
-shit_label.grid(row=3, rowspan=2, column=2, sticky="w", padx=10, pady=10)
+op_box.grid(row=0, rowspan=4, column=2, sticky="w", padx=10, pady=10)
 
 #backwards
 resin_back_button = tk.Button(tab2, text="Resin Calculate",
@@ -216,6 +217,13 @@ time_picker.grid(row=4, column=0,sticky="w",padx=10, pady=10)
 
 #default values
 resin_have.insert(0, "0")
+
+def res_copy():
+    res_copy_clip = op_box.get("1.0", tk.END)
+    pyperclip.copy(res_copy_clip)
+    
+resin_copy = tk.Button(tab2, text="Copy", command=res_copy)
+resin_copy.grid(row=4, column=2, columnspan=3, padx=10, pady=10)
 
 def printshit():
     nowdatetime = datetime.datetime.now()
@@ -261,13 +269,35 @@ def printshit():
     # calculate the difference in minutes
     total_minutes = (end_date - start_date) * 24 * 60 + (end_time - start_time)
     
+    #calculate resin
     resin_output = math.floor(total_minutes/8+float(reshav))
 
+    #output num
     text_box2.delete("1.0", tk.END)
     text_box2.insert(tk.END, resin_output)
+
+    #detailed output
+    op_box_val = text_box2.get("1.0", tk.END)
+    op_box_val = op_box_val.replace('\n','')
+    wantdatetime = datetime.datetime(int(resin_year),
+                                    int(resin_month),
+                                    int(resin_day),
+                                    int(resin_hour),
+                                    int(resin_minute))
+    wantdatetime_str = wantdatetime.strftime(personal_dtformat)
+    nowdatetime_str = nowdatetime.strftime(personal_dtformat)
+
+    op_box.delete("1.0", tk.END)
+    op_box.insert(tk.END, ""
+        +f"{reshav}->{op_box_val} Resin\n"
+        +"from\n"
+        +f"{nowdatetime_str}\n"
+        +"to\n"
+        +f"{wantdatetime_str}\n"
+        +f"Condensed Resin: {math.floor(resin_output/40)}\nFragile Resin: {math.floor(resin_output%40/20)}"
+        )
+    # op_box.config(text=f"Condensed Resin: {math.floor(resin_output/40)}\nFragile Resin: {math.floor(resin_output%40/20)}")
     
-    shit_label.config(text=f"Condensed Resin: {math.floor(resin_output/40)}\nFragile Resin: {math.floor(resin_output%40/20)}")
-    # wantdatetime = datetime.datetime(int(resin_year),int(resin_month),int(resin_day),int(resin_hour),int(resin_minute))
     # print(nowdatetime.strftime("%Y-%m-%d %H:%M"))
     # print(wantdatetime.strftime("%Y-%m-%d %H:%M"))
 
@@ -330,6 +360,17 @@ a_submit = tk.Button(tab3, text="Calculate",
 a_submit.grid(row=2,column=0,columnspan=2,padx=10,pady=10)
 
 #endregion
+
+def on_tab_keypress(event):
+    current_tab = tab_control.tab(tab_control.select(), "text")
+    if current_tab == tab1_txt:
+        button.invoke()
+    elif current_tab == tab2_txt:
+        resin_button.invoke()
+    elif current_tab == tab3_txt:
+        a_submit.invoke()
+
+window.bind("<Return>", on_tab_keypress)
 
 # run the main loop
 window.mainloop()
