@@ -313,11 +313,21 @@ arti_op_label.grid(row=0,column=1,padx=20)
 arti_hv.grid(row=1,column=0,padx=10,pady=10)
 arti_op.grid(row=1,column=1,padx=10,pady=10)
 
-#button
-resin_back_button = tk.Button(tab2, text="Resin Calculate",
-                            #   command=printshit,
-                               width=15, height=1)
+#default values
+arti_hv.insert(0, "1400")
 
+def arti_calc():
+    #calculations
+    cr_runs = math.ceil((1500-float(arti_hv.get()))/15)
+
+    arti_op.delete("1.0", tk.END)
+    arti_op.insert(tk.END, str(cr_runs))
+
+#button
+a_submit = tk.Button(tab3, text="Calculate",
+                              command=arti_calc,
+                               width=15, height=1)
+a_submit.grid(row=2,column=0,columnspan=2,padx=10,pady=10)
 
 #endregion
 
