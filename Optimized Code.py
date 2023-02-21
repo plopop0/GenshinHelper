@@ -21,10 +21,12 @@ tab_control = ttk.Notebook(window)
 # create tabs
 tab1 = ttk.Frame(tab_control)
 tab2 = ttk.Frame(tab_control)
+tab3 = ttk.Frame(tab_control)
 
 # add tabs to tab control
-tab_control.add(tab1, text="Tab 1")
-tab_control.add(tab2, text="Tab 2")
+tab_control.add(tab1, text=" Ascension Materials ")
+tab_control.add(tab2, text="     Resin     ")
+tab_control.add(tab3, text="   Artifacts   ")
 
 # pack the tab control to the main window
 tab_control.grid(column=0, row=0, sticky="nsew")
@@ -166,8 +168,25 @@ nowdt += datetime.timedelta(minutes=320)
 # Create the widgets for tab 2
 resin_have = tk.Entry(tab2, width=10)
 date_picker = DateEntry(tab2, width=12, background='darkblue', foreground='white', borderwidth=2)
-time_picker = SpinTimePickerOld(tab2,h_width=5,m_width=5,p_width=4,i_hr=int(nowdt.strftime('%I')),i_min=nowdt.minute,i_p=nowdt.strftime('%p'))
+
+#backwards
+time_picker = SpinTimePickerOld(tab2,h_width=5,m_width=5,p_width=4,
+                                i_hr=int(nowdt.strftime('%I')),i_min=nowdt.minute,i_p=nowdt.strftime('%p'))
 time_picker.addAll(0,1)
+#change spinTimePickerOld with my own so that i have more control
+
+# h_var = tk.StringVar(value='5')
+# m_var = tk.StringVar(value='5')
+
+# h_TP = tk.Spinbox(window, width=5, increment=1, from_=1, to=12,
+#                                           validate="all")
+# m_TP = tk.Spinbox(window, width=5, increment=1, from_=1, to=59,
+#                                           validate="all")
+# p-TP =
+
+
+
+
 
 text_box1 = tk.Text(tab2, width=22, height=1)
 text_box2 = tk.Text(tab2, width=10, height=1)
@@ -186,6 +205,7 @@ text_box2.grid(row=3, column=1, padx=10, pady=10)
 
 shit_label.grid(row=3, rowspan=2, column=2, sticky="w", padx=10, pady=10)
 
+#backwards
 resin_back_button = tk.Button(tab2, text="Resin Calculate",
                             #   command=printshit,
                                width=15, height=1)
@@ -275,6 +295,31 @@ resin_button.grid(row=5, column=0,columnspan=4, pady=10)
 
 #endregion
 
+#region Artifacts Calculator codes Tab 3
+
+#Labels
+arti_hv_label = tk.Label(tab3, text="Number of Artifacts You have")
+arti_op_label = tk.Label(tab3, text="Output")
+# arti_op = tk.Label(tab3, text="temp text")
+arti_op = tk.Text(tab3, width=10, height=1)
+
+#widgets
+arti_hv = tk.Entry(tab3, width=10)
+
+#place widgets
+arti_hv_label.grid(row=0,column=0,padx=20)
+arti_op_label.grid(row=0,column=1,padx=20)
+
+arti_hv.grid(row=1,column=0,padx=10,pady=10)
+arti_op.grid(row=1,column=1,padx=10,pady=10)
+
+#button
+resin_back_button = tk.Button(tab2, text="Resin Calculate",
+                            #   command=printshit,
+                               width=15, height=1)
+
+
+#endregion
 
 # run the main loop
 window.mainloop()
