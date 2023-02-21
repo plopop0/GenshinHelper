@@ -161,6 +161,7 @@ shit_label = tk.Label(tab2, text="Condensed Resin: 0\nFragile Resin: 0")
 
 #for timepicker use only
 nowdt = datetime.datetime.now()
+nowdt += datetime.timedelta(minutes=320)
 
 # Create the widgets for tab 2
 resin_have = tk.Entry(tab2, width=10)
@@ -171,6 +172,27 @@ time_picker.addAll(0,1)
 text_box1 = tk.Text(tab2, width=22, height=1)
 text_box2 = tk.Text(tab2, width=10, height=1)
 personal_dtformat = "%m/%d/%Y %I:%M %p"
+
+# Place the widgets in tab 2
+resin_have_label.grid(row=0, column=0, padx=0, pady=0)
+full_resin_label.grid(row=0, column=1, padx=0, pady=0)
+resin_have.grid(row=1, column=0, padx=10, pady=10)
+text_box1.grid(row=1, column=1, padx=10, pady=10)
+
+calcdtres_label.grid(row=2, column=0, padx=0, pady=0)
+calcdtres_output_label.grid(row=2, column=1, padx=10, pady=10)
+date_picker.grid(row=3,column=0,sticky="w",padx=10)
+text_box2.grid(row=3, column=1, padx=10, pady=10)
+
+shit_label.grid(row=3, rowspan=2, column=2, sticky="w", padx=10, pady=10)
+
+resin_back_button = tk.Button(tab2, text="Resin Calculate",
+                            #   command=printshit,
+                               width=15, height=1)
+resin_back_button.grid(row=4, column=1, padx=10)
+
+time_picker.grid(row=4, column=0,sticky="w",padx=10, pady=10)
+
 
 #default values
 resin_have.insert(0, "0")
@@ -247,25 +269,8 @@ def printshit():
     # print(((160-float(reshav))*8)%60)
     
 
-resin_button = tk.Button(tab2, text="Submit", command=printshit, width=30, height=2)
-
-# Place the widgets in tab 2
-resin_have_label.grid(row=0, column=0, padx=0, pady=0)
-full_resin_label.grid(row=0, column=1, padx=0, pady=0)
-resin_have.grid(row=1, column=0, padx=10, pady=10)
-text_box1.grid(row=1, column=1, padx=10, pady=10)
-
-calcdtres_label.grid(row=2, column=0, padx=0, pady=0)
-calcdtres_output_label.grid(row=2, column=1, padx=10, pady=10)
-date_picker.grid(row=3,column=0,sticky="w",padx=10)
-text_box2.grid(row=3, rowspan=2, column=1, padx=10, pady=10)
-
-
-shit_label.grid(row=3, rowspan=2, column=2, padx=10, pady=10)
-
-time_picker.grid(row=4, column=0,sticky="w",padx=10, pady=10)
-
-resin_button.grid(row=5, column=0,columnspan=3 , pady=10)
+resin_button = tk.Button(tab2, text="Submit", command=printshit, width=55, height=2)
+resin_button.grid(row=5, column=0,columnspan=4, pady=10)
 
 
 #endregion
