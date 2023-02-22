@@ -208,29 +208,18 @@ op_box.grid(row=0, rowspan=4, column=2, sticky="w", padx=10, pady=10)
 
 #backwards
 def reswantcalc():
+    #get values
     nowdatetime = datetime.datetime.now()
     reshav = resin_have.get()
-    date = date_picker.get_date()
-    resin_month = date.month
-    resin_day = date.day
-    resin_year = date.year
-    resin_hour = float(time_picker.hours())
-    nowhr = nowdatetime.hour
-    resin_minute = float(time_picker.minutes())
-
     op_box_val = text_box2.get("1.0", tk.END)
     op_box_val = op_box_val.replace('\n','')
 
+    #datetime calculation
     wantdatetime = nowdatetime + datetime.timedelta(minutes=(int(op_box_val)-int(reshav))*8)
     wantdatetime_str = wantdatetime.strftime(personal_dtformat)
     nowdatetime_str = nowdatetime.strftime(personal_dtformat)
 
-    #converts hours from 12h to 24h
-    if(time_picker.period()=="a.m" and time_picker.hours()==12):resin_hour = 0
-    elif(time_picker.period()=="p.m" and time_picker.hours()<12):resin_hour += 12
-    nowmin = nowdatetime.minute
-    
-
+    #output
     op_box.delete("1.0", tk.END)
     op_box.insert(tk.END, ""
         +f"{reshav}->{op_box_val} Resin\n"
@@ -240,8 +229,6 @@ def reswantcalc():
         +f"{wantdatetime_str}\n"
         +f"Condensed Resin: {math.floor(float(op_box_val)/40)}\nFragile Resin: {math.floor(float(op_box_val)%40/20)}"
         )
-
-
 
 resin_back_button = tk.Button(tab2, text="Resin Calculate",
                               command=reswantcalc,
