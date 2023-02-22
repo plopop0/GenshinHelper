@@ -3,8 +3,21 @@ import math
 import datetime
 from tkinter import ttk
 from tkcalendar import DateEntry
-from tktimepicker import SpinTimePickerOld
 import pyperclip
+
+from tktimepicker import SpinTimePickerOld
+"""
+This program requires to manipulate tktimepicker because its limitations
+can't make the program work well.
+You can install tktimepicker normally with pip and just replace the code
+in timepicker.py with the timepicker.py here:
+https://github.com/plopop0/GenshinHelpertkTimePicker/blob/d8dbe648f14c5c24ef4176c158c92754b195213b/build/lib/tktimepicker/timepicker.py
+
+to view what changed go here:
+https://github.com/plopop0/GenshinHelpertkTimePicker/commit/d8dbe648f14c5c24ef4176c158c92754b195213b
+
+I'm just starting out so I don't really know how to repackage a pre-built package on my own repo so forgive me. s
+"""
 
 # create the main window
 window = tk.Tk()
