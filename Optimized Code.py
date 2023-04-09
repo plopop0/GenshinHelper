@@ -5,6 +5,32 @@ from tkinter import ttk
 from tkcalendar import DateEntry
 from tktimepicker import SpinTimePickerOld
 import pyperclip
+from tkinter import simpledialog
+
+import pickle
+import os
+#TODO Clean the Code lmao
+
+file_name = "data.pkl"
+file_path = os.path.join(os.getcwd(), file_name)
+default_data = {'resin have': 20, 'date and time':datetime.datetime.now()}
+
+if os.path.exists(file_path):
+    with open(file_path, 'rb') as file:
+        data = pickle.load(file)
+else:
+    # Save the default data to the file if it doesn't exist
+    with open(file_path, 'wb') as file:
+        pickle.dump(default_data, file)
+    # Set the data variable to the default data
+    data = default_data
+
+pklreshave = data.get('resin have')
+pklrestime = data.get('date and time')  #? datetime object
+
+
+
+# print(pklrestime.strftime("%Y-%m-%d %H:%M:%S"))
 
 # create the main window
 window = tk.Tk()
@@ -166,26 +192,35 @@ op_box = tk.Text(tab2, width=20, height=8)
 
 #for timepicker use only
 nowdt = datetime.datetime.now()
-nowdt += datetime.timedelta(minutes=320)
+
+# for instant 40 resin from now. datetime is wack so it doesn't work that well
+# nowdt += datetime.timedelta(minutes=320)
 
 # Create the widgets for tab 2
 resin_have = tk.Entry(tab2, width=10)
+
+#?This is where we change the initial resin value dynamically whenever it opens
+timediff = datetime.datetime.now() - pklrestime
+mins_timediff = int(timediff.total_seconds()/60)
+initreshav = mins_timediff//8+pklreshave
+print("minute diff:",mins_timediff,"seconds diff:",timediff.total_seconds())
+resin_have.insert(0, initreshav)
+
 date_picker = DateEntry(tab2, width=12, background='darkblue', foreground='white', borderwidth=2)
 
 #backwards
 time_picker = SpinTimePickerOld(tab2,h_width=5,m_width=5,p_width=4,
-                                i_hr=int(nowdt.strftime('%I')),i_min=nowdt.minute,i_p=nowdt.strftime('%p'))
+                                i_hr=11,
+                                i_min=0,
+                                i_p="PM"
+# for instant 40 resin from now.
+                                # i_hr=int(nowdt.strftime('%I')),
+                                # i_min=nowdt.minute,
+                                # i_p=nowdt.strftime('%p')
+                                )
 time_picker.addAll(0,1)
 #change spinTimePickerOld with my own so that i have more control
 
-# h_var = tk.StringVar(value='5')
-# m_var = tk.StringVar(value='5')
-
-# h_TP = tk.Spinbox(window, width=5, increment=1, from_=1, to=12,
-#                                           validate="all")
-# m_TP = tk.Spinbox(window, width=5, increment=1, from_=1, to=59,
-#                                           validate="all")
-# p-TP =
 
 #/backwards
 
@@ -237,8 +272,6 @@ resin_back_button.grid(row=4, column=1, padx=10)
 time_picker.grid(row=4, column=0,sticky="w",padx=10, pady=10)
 
 
-#default values
-resin_have.insert(0, "0")
 
 def res_copy():
     res_copy_clip = op_box.get("1.0", tk.END)
@@ -339,10 +372,24 @@ def printshit():
 
     # print(math.floor((160.0 - float(reshav))*8/60))
     # print(((160-float(reshav))*8)%60)
-    
 
-resin_button = tk.Button(tab2, text="Submit", command=printshit, width=55, height=2)
-resin_button.grid(row=5, column=0,columnspan=4, pady=10)
+def syncdata():
+    top_level = resin_have.winfo_toplevel()
+    str_1 = simpledialog.askstring("Input", "Please enter minutes left:", parent=top_level)
+    str_2 = simpledialog.askstring("Input", "Please enter seconds left:", parent=top_level)
+    
+    syncdatetime = datetime.datetime.now() + datetime.timedelta(minutes = int(str_1),seconds=int(str_2))
+    syncdata = {'resin have': int(resin_have.get())+1, 'date and time':syncdatetime}
+    with open(file_path, 'wb') as file:
+        pickle.dump(syncdata, file)
+
+    print("The Saved Data:",int(resin_have.get())+1,syncdatetime.strftime('%m/%d/%Y %I:%M:%S %p'))
+
+
+resin_button = tk.Button(tab2, text="Submit", command=printshit, width=30, height=2)
+resin_button.grid(row=5, column=0,columnspan=2, pady=10)
+resin_button = tk.Button(tab2, text="Sync", command=syncdata, width=10, height=1)
+resin_button.grid(row=5, column=1,columnspan=2, pady=10, padx=10)
 
 
 #endregion
